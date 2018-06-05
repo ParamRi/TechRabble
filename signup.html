@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Example Sign Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/home.css" . <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+	body {
+		background: #ffffff;
+	}
+	.form-control {
+        min-height: 38px;
+		box-shadow: none;
+	}
+    .form-control, .btn {        
+        min-height: 38px;
+        border-radius: 2px;
+    }
+	.signup-form {
+		width: 340px;
+		margin: 50px auto;
+	}
+	.signup-form h2 {
+		color: #333;
+        margin: 0 0 15px;
+    }
+    .signup-form form {
+    	margin-bottom: 15px;
+        background: #e2e2e2;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group {
+		margin-bottom: 0 0 15px;
+	}
+	.signup-form label {
+		font-weight: normal;
+		font-size: 13px;
+	}
+	.signup-form input[type="checkbox"] {
+		margin-top: 2px;
+	}    
+    .signup-form .btn {        
+        font-size: 15px;
+        font-weight: bold;
+		background: #007bff;
+		border: none;
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .btn:hover, .signup-form .btn:focus {
+		background: #007bff;
+	}
+	.signup-form a {
+		color: #007bff;
+		text-decoration: none;
+	}	
+	.signup-form a:hover {
+		text-decoration: underline;
+	}
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="navBar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Hot</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Controversial</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="signin.html">sign-in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">sign-up</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="jumbotron text-center">
+        <h1>TechRabble</h1>
+        <p id="subheader">Feel Free to Rabble!</p>
+    </div>
+
+
+
+<div class="signup-form">
+    <form action="/examples/actions/confirmation.php" method="post">
+		<h2 class="text-center">Sign Up</h2>
+        <div class="form-group">
+        	<input type="text" class="form-control" name="username" placeholder="Username" required="required">
+        </div>
+        <div class="form-group">
+        	<input type="email" class="form-control" name="email" placeholder="Email Address" required="required">
+        </div>
+		<div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+        </div>
+		<div class="form-group">
+            <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
+        </div>        
+        <div class="form-group">
+			<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
+		</div>
+		<div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        </div>
+    </form>
+	<div class="text-center">Already have an account? <a href="signin.html">Sign In Here</a></div>
+</div>
+</body>
+</html>                                
