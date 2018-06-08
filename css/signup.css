@@ -1,0 +1,69 @@
+.jumbotron {
+  background: rgb(196, 196, 196);
+}
+
+body {
+  background: #ffffff;
+}
+
+.form-control {
+  min-height: 38px;
+  box-shadow: none;
+}
+
+.form-control, .btn {
+  min-height: 38px;
+  border-radius: 2px;
+}
+
+.signup-form {
+  width: 340px;
+  margin: 50px auto;
+}
+
+.signup-form h2 {
+  color: #333;
+  margin: 0 0 15px;
+}
+
+.signup-form form {
+  margin-bottom: 15px;
+  background: #e2e2e2;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+}
+
+.signup-form .form-group {
+  margin-bottom: 0 0 15px;
+}
+
+.signup-form label {
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.signup-form input[type="checkbox"] {
+  margin-top: 2px;
+}
+
+.signup-form .btn {
+  font-size: 15px;
+  font-weight: bold;
+  background: #007bff;
+  border: none;
+  min-width: 140px;
+  outline: none !important;
+}
+
+.signup-form .btn:hover, .signup-form .btn:focus {
+  background: #007bff;
+}
+
+.signup-form a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-form a:hover {
+  text-decoration: underline;
+}
