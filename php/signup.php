@@ -10,8 +10,15 @@
   if ($password == $confirm_password) echo "passwords match <br>";
   if ($password != $confirm_password) echo "passwords don't match <br>";
   
-  //$mysqli = new mysqli("localhost", "$username", "$password", "techrabble");
-  //$result = $mysqli->query("SELECT username FROM usertable");
+  $mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+  $sql = "INSERT INTO usertable (username, email, passwordHash) VALUES ('$username', '$email', '$password')";
+  $result = $mysqli->query($sql);
+  echo $result;
+  if ($result === TRUE) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $mysqli->error;
+  }
   /*
   while ($row = $result->fetch_assoc()) {
     echo $row['username']."<br>";
