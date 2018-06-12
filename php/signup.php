@@ -11,7 +11,7 @@
   if ($password != $confirm_password) echo "passwords don't match <br>";
   
   $mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
-  $sql = "INSERT INTO usertable (username, email, passwordHash) VALUES ('$username', '$email', '$password')";
+  $sql = "INSERT INTO usertable (username, email, passwordHash) VALUES ('$username', '$email', '" . sha1($password) . "')";
   $result = $mysqli->query($sql);
   echo $result;
   if ($result === TRUE) {
