@@ -1,5 +1,5 @@
 <!--
-    Dev: Nathan Kurz
+    Dev: Nathan Kurz, Param Ri
     File: home.html
     Description: Home page for TechRabble
      -->
@@ -31,45 +31,3 @@
       </li>
     </ul>
   </nav>
-
-  <div class="jumbotron text-center">
-    <h1>TechRabble</h1>
-    <p id="subheader">Feel Free to Rabble!</p>
-  </div>
-
-  <div class="container">
-    <div class="col-sm-12 text-center" id="discussionTitle">
-      <h2>Featured Discussions</h2>
-    </div>
-	<?php 
-	  $mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
-	  $sql = "SELECT * FROM discussions";
-	  $result = $mysqli->query($sql);
-	  if (mysql_num_rows($result)==0) {
-		echo "Retrived";
-		echo "<div class=\"row\">";
-
-		while($row = $result->fetch_assoc())
-		{
-			echo "<tr>";
-			echo "<td>" . $row['title'] . "</td>";
-			echo "<td>" . $row['subj'] . "</td>";
-			echo "<td>" . $row['body'] . "</td>";
-			echo "</tr>";
-			$out = <<<_END 
-				<div class="col-sm-4">
-				<h3>$row['title']</h3>
-				<p> $row['subj']</p>
-				<p> $row['body']</p>
-				</div>
-			_END; 
-			echo $out;
-		}
-		echo "</div>";
-		mysqli_close($mysqli);
-	  } else {
-		echo "Error: " . $sql . "<br>" . $mysqli->error;
-	  }
-		
-	 ?>
-  </div>

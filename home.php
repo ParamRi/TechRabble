@@ -45,24 +45,18 @@
 	  $mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
 	  $sql = "SELECT * FROM discussions";
 	  $result = $mysqli->query($sql);
-	  if (mysql_num_rows($result)==0) {
-		echo "Retrived";
+	  if ($result->num_rows > 0) {
 		echo "<div class=\"row\">";
 
 		while($row = $result->fetch_assoc())
 		{
-			echo "<tr>";
-			echo "<td>" . $row['title'] . "</td>";
-			echo "<td>" . $row['subj'] . "</td>";
-			echo "<td>" . $row['body'] . "</td>";
-			echo "</tr>";
-			$out = <<<_END 
-				<div class="col-sm-4">
-				<h3>$row['title']</h3>
-				<p> $row['subj']</p>
-				<p> $row['body']</p>
-				</div>
-			_END; 
+			$out = "
+				<div class=\"col-sm-4\">
+				<a href=\"discussion.php?id='". $row['discId'] . "'\">
+				<h3>" .$row['title'] . "</h3></a>
+				<p>" . $row['subj'] . "</p>
+				<p>" . $row['body'] . "</p>
+				</div>";
 			echo $out;
 		}
 		echo "</div>";
