@@ -1,47 +1,20 @@
 <!--
-    Dev: Nathan Kurz
+    Dev: Nathan Kurz, Param Ri
     File: home.html
     Description: Home page for TechRabble
      -->
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <title>TechRabble</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/home.css" . <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-</head>
+<?php 
+	include 'header.php';
+  echo "<div class=\"jumbotron text-center\">";
+  echo " <h1>TechRabble</h1>";
+  echo "  <p id=\"subheader\">Feel Free to Rabble!</p></div>";
 
-<body>
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="navBar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="home.html">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="signin.html">sign-in</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="signup.html">sign-up</a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="jumbotron text-center">
-    <h1>TechRabble</h1>
-    <p id="subheader">Feel Free to Rabble!</p>
-  </div>
-
-  <div class="container">
-    <div class="col-sm-12 text-center" id="discussionTitle">
+  echo "<div class=\"container\">
+    <div class=\"col-sm-12 text-center\" id=\"discussionTitle\">
       <h2>Featured Discussions</h2>
-    </div>
-	<?php 
+    </div>";
+
 	  $mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
 	  $sql = "SELECT * FROM discussions";
 	  $result = $mysqli->query($sql);
@@ -67,3 +40,4 @@
 		
 	 ?>
   </div>
+</body>
