@@ -29,5 +29,8 @@
       <li class="nav-item">
         <a class="nav-link" href="signup.html">sign-up</a>
       </li>
+	  <li class="nav-item">
+		<a class="nav-link" href="new_discussion_form.html">New Discussion</a>
+	  </li>
     </ul>
   </nav>

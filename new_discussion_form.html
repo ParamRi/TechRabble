@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TechRabble</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/signin.css">
+  <link rel="stylesheet" href="css/signup.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -32,20 +32,24 @@
     <p id="subheader">Feel Free to Rabble!</p>
   </div>
 
-  <div class="login-form">
-    <form action="php/signin.php" method="post">
-      <h2 class="text-center">Sign In</h2>
+
+
+  <div class="new-discussion-form">
+    <form action="php/new_discussion_form.php" method="post">
+      <h2 class="text-center">Start a New Discussion</h2>
       <div class="form-group">
-        <input type="text" class="form-control" name="username" placeholder="Username" required="required">
-
-        <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-
-        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-      </div>
-      <div class="clearfix">
-        <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
-        <a href="#" class="pull-right">Forgot Password?</a>
+        <input type="title" class="form-control" name="Title" placeholder="Username" required="required">
+      
+        <input type="subject" class="form-control" name="Subject" placeholder="Email Address" required="required">
+      
+        <input type="body" class="form-control" name="body" placeholder="body" required="required">
+    
+        <label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
+      
+        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
       </div>
     </form>
-    <p class="text-center"><a href="#">Create an Account</a></p>
   </div>
+</body>
+
+</html>
