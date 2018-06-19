@@ -21,7 +21,7 @@
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="navBar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="home.html">Home</a>
+        <a class="nav-link" href="home.php">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="signin.php">sign-in</a>
@@ -30,7 +30,7 @@
         <a class="nav-link" href="signup.html">sign-up</a>
       </li>
 	  <li class="nav-item">
-		<a class="nav-link" href="new_discussion_form.html">New Discussion</a>
+		<a class="nav-link" href="create_new_discussion.php">New Discussion</a>
 	  </li>
     </ul>
   </nav>

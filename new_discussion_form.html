@@ -1,55 +1,21 @@
+<!--
+    Dev: Param Ri
+    File: new_discussion_form.php
+    Description: Page that allows users to create new discussions
+     -->
 <!DOCTYPE html>
 <html lang="en">
+<div class="login-form">
+	<form action="" method="post">
+	  <h2 class="text-center">Create New Discussion</h2>
+	  <div class="form-group">
+		<input type="text" class="form-control" name="title" placeholder="Title" required="required">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TechRabble</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/signup.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-</head>
+		<input type="text" class="form-control" name="subject" placeholder="Subject">
 
-<body>
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="navBar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="home.html">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="signin.html">sign-in</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="signup.html">sign-up</a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="jumbotron text-center">
-    <h1>TechRabble</h1>
-    <p id="subheader">Feel Free to Rabble!</p>
-  </div>
-
-
-
-  <div class="new-discussion-form">
-    <form action="php/new_discussion_form.php" method="post">
-      <h2 class="text-center">Start a New Discussion</h2>
-      <div class="form-group">
-        <input type="title" class="form-control" name="Title" placeholder="Username" required="required">
-      
-        <input type="subject" class="form-control" name="Subject" placeholder="Email Address" required="required">
-      
-        <input type="body" class="form-control" name="body" placeholder="body" required="required">
-    
-        <label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
-      
-        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-      </div>
-    </form>
-  </div>
-</body>
-
-</html>
+		<textarea type="text" rows="10" cols="50" class="form-control" name="body" placeholder="Body" required="required">
+Body
+		</textarea>
+		<button type="submit" class="btn btn-primary btn-block">Submit</button>
+	  </div>
+</div>
