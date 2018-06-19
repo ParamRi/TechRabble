@@ -26,7 +26,7 @@
 			$out = "
 				<div class=\"col-sm-4\">
 				<a href=\"discussion.php?id='". $row['discId'] . "'\">
-				<h3>" .$row['title'] . "</h3></a>
+				<h3>" . $row['title'] . "</h3></a>
 				<p>" . $row['subj'] . "</p>
 				<p>" . $row['body'] . "</p>
 				</div>";

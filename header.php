@@ -24,7 +24,7 @@
         <a class="nav-link" href="home.html">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="signin.html">sign-in</a>
+        <a class="nav-link" href="signin.php">sign-in</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="signup.html">sign-up</a>
