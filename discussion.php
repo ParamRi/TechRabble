@@ -32,6 +32,7 @@
 			</div> ';
 		} else {
 			$comment = $_POST['comment'];
+			$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"".$comment."\", '".$_SESSION['id'] ."', " . $disc_id . ");";
 			echo $sql4;
 			$result4 = $mysqli->query($sql4);
 			if($result4 === True) {
