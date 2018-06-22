@@ -4,6 +4,7 @@
     Description: Description page for TechRabble
      -->
 <?php 
+	session_start();
 	include 'header.php';
 
 	echo "<div class=\"container\">";
@@ -18,6 +19,73 @@
 		echo "<div class=\"jumbotron text-center\">";
 		echo "<h2>" . $row['subj'] . "</h2>";
 		echo "<p>" . $row['body'] . "</p></div>";
+		
+	if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
+		if($_SERVER['REQUEST_METHOD'] != 'POST') {
+			echo '<div class="container">
+			<form action="" method="post">
+				<textarea placeholder="Write your comment here" name="comment"></textarea>
+				<div>
+					<button type="submit">Submit</button>
+				</div>
+			</form>
+			</div> ';
+		} else {
+			$comment = $_POST['comment'];
+			echo $sql4;
+			$result4 = $mysqli->query($sql4);
+			if($result4 === True) {
+				echo 'Comment added successfully';
+			} else {
+				echo 'Couldn\'t add comment.';
+				echo $mysqli->error;
+			}
+		}
+	} else {
+		echo 'You must be signed in to make a comment.';
+	}
+	$sql2 = "SELECT * FROM `comments` WHERE discID=" . $disc_id . "; ";
+	$result2 = $mysqli->query($sql2);
+	echo ' <div class="container">
+		  <div class="row">
+			<div class="col-md-8">
+			  <h2 class="page-header">Comments</h2>';
+	while($comment = $result2->fetch_assoc()){
+		$sql3 = "SELECT username FROM usertable WHERE id=". $comment['userID']. ";";
+		$result3 = $mysqli->query($sql3) or die($mysqli->error);
+		$user = $result3->fetch_assoc();
+		echo '<section class="comment-list">
+			  <!-- First Comment -->
+			  <article class="row">
+				<div class="col-md-2 col-sm-2 hidden-xs">
+				  <figure class="thumbnail">
+					<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
+					<figcaption class="text-center">username</figcaption>
+				  </figure>
+				</div>
+				<div class="col-md-10 col-sm-10">
+				  <div class="panel panel-default arrow left">
+					<div class="panel-body">
+					  <header class="text-left">
+						<div class="comment-user"><i class="fa fa-user"></i> ' . $user['username'] . '</div>
+						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $comment['post_date'] .' </time>
+					  </header>
+					  <div class="comment-post">
+						<p> '. 
+						  $comment['body']
+						. ' </p>
+					  </div>
+					  <p class="text-right"><a href="#" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> reply</a></p>
+					</div>
+				  </div>
+				</div>
+			  </article>
+			  </section>
+		';
+	}
+	echo '</div>
+			</div>
+		</div>';
 	?> 
   </div>
 </body>

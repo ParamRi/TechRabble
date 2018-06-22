@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-  include '../header.php';
+  include 'header2.php';
   $username = $_POST['username'];
   $email = $_POST['email'];
   $password = $_POST['password'];

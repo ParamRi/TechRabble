@@ -69,3 +69,7 @@ body {
 .signup-form a:hover {
   text-decoration: underline;
 }
+
+.comment{
+    display: flex;
+}
