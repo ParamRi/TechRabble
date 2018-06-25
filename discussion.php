@@ -32,7 +32,7 @@
 			</div> ';
 		} else {
 			$comment = $_POST['comment'];
-			$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"".$comment."\", '".$_SESSION['id'] ."', " . $disc_id . ");";
+			$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $comment . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
 			echo $sql4;
 			$result4 = $mysqli->query($sql4);
 			if($result4 === True) {
@@ -45,7 +45,7 @@
 	} else {
 		echo 'You must be signed in to make a comment.';
 	}
-	$sql2 = "SELECT * FROM `comments` WHERE discID=" . $disc_id . "; ";
+	$sql2 = "SELECT * FROM `comments` WHERE discID=" . $disc_id . " AND commentID NOT IN (SELECT replyPost FROM replys); ";
 	$result2 = $mysqli->query($sql2);
 	echo ' <div class="container">
 		  <div class="row">
@@ -75,7 +75,35 @@
 						<p> '. 
 						  $comment['body']
 						. ' </p>
-					  </div>
+		';
+		$sqlReplies = "SELECT replyPost FROM replys WHERE originalPost=". $comment['commentID'] . ";";
+		$resultReplies = $mysqli->query($sqlReplies);
+		$hasReplies = False;
+		if($resultReplies->num_rows > 0) {
+			echo ' <div class="container">
+			<h3 class="page-header">Replies</h3>
+				  ';
+			$hasReplies = True;
+		}
+		while($reply = $resultReplies->fetch_assoc()) {
+			echo ' 
+				<div class="row">
+				<div class="col-md-8">
+			';
+			$sqlReplies2 = "SELECT body FROM comments WHERE commentID='" . $reply['replyPost'] . "';";
+			$resultReplies2 = $mysqli->query($sqlReplies2);
+			echo '<p> '. $resultReplies2->fetch_assoc()['body'].'</p>';
+			echo '
+				</div>
+			</div>
+			';
+		}
+		if($hasReplies) {
+			echo '
+			</div>
+			';
+		}
+		echo '</div>
 					  <p class="text-right"><a href="#" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> reply</a></p>
 					</div>
 				  </div>
