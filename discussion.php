@@ -80,28 +80,39 @@
 		$resultReplies = $mysqli->query($sqlReplies);
 		$hasReplies = False;
 		if($resultReplies->num_rows > 0) {
-			echo ' <div class="container">
-			<h3 class="page-header">Replies</h3>
+			echo '<section class="comment-list">
+			  <!-- First Comment -->
+			  <article class="row">
+				<div class="col-md-2 col-sm-2 hidden-xs">
+				  <figure class="thumbnail">
+					<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
+					<figcaption class="text-center">username</figcaption>
+				  </figure>
+				</div>
+				<div class="col-md-10 col-sm-10">
 				  ';
 			$hasReplies = True;
 		}
 		while($reply = $resultReplies->fetch_assoc()) {
+			$sqlReplies2 = "SELECT userID, post_date, body FROM comments WHERE commentID='" . $reply['replyPost'] . "';";
+			$resultReplies2 = $mysqli->query($sqlReplies2)->fetch_assoc();
 			echo ' 
-				<div class="row">
-				<div class="col-md-8">
+				<div class="panel panel-default arrow left">
+					<div class="panel-body">
+					  <header class="text-left">
+						<div class="comment-user"><i class="fa fa-user"></i> ' . $resultReplies2['userID'] . '</div>
+						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
 			';
-			$sqlReplies2 = "SELECT body FROM comments WHERE commentID='" . $reply['replyPost'] . "';";
-			$resultReplies2 = $mysqli->query($sqlReplies2);
-			echo '<p> '. $resultReplies2->fetch_assoc()['body'].'</p>';
+			echo '<p> '. $resultReplies2['body'].'</p>';
 			echo '
 				</div>
 			</div>
 			';
 		}
 		if($hasReplies) {
-			echo '
+			echo '</div>
 			</div>
-			';
+		</div>';
 		}
 		echo '</div>
 					  <p class="text-right"><a href="#" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> reply</a></p>
