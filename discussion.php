@@ -52,7 +52,7 @@
 			<div class="col-md-8">
 			  <h2 class="page-header">Comments</h2>';
 	while($comment = $result2->fetch_assoc()){
-		$sql3 = "SELECT username FROM usertable WHERE id=". $comment['userID']. ";";
+		$sql3 = "SELECT username, id FROM usertable WHERE id=". $comment['userID']. ";";
 		$result3 = $mysqli->query($sql3) or die($mysqli->error);
 		$user = $result3->fetch_assoc();
 		echo '<section class="comment-list">
@@ -68,7 +68,8 @@
 				  <div class="panel panel-default arrow left">
 					<div class="panel-body">
 					  <header class="text-left">
-						<div class="comment-user"><i class="fa fa-user"></i> ' . $user['username'] . '</div>
+						<a href="profile.php?id='. $user['id'] . '">
+						<i class="fa fa-user"></i> ' . $user['username'] . '</div></a>
 						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $comment['post_date'] .' </time>
 					  </header>
 					  <div class="comment-post">
@@ -76,9 +77,20 @@
 						  $comment['body']
 						. ' </p>
 		';
+		$commentID = $comment['commentID'];
+		echo '
+			<div id="'.$commentID.'" style="display:none">
+				<form action="" method="post">
+					<textarea placeholder="Write your comment here" name="comment"></textarea>
+					<div>
+						<button type="submit">Submit</button>
+					</div>
+				</form>
+			</div>
+		';
 		postReplies($mysqli, $comment);
 		echo '</div>
-					  <p class="text-right"><a href="#" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> reply</a></p>
+					  <button onclick="openText('.$commentID.')">Reply</button>
 					</div>
 				  </div>
 				</div>
@@ -96,7 +108,6 @@
 		$hasReplies = False;
 		if($resultReplies->num_rows > 0) {
 			echo '<section class="comment-list">
-			  <!-- First Comment -->
 			  <article class="row">
 				<div class="col-md-2 col-sm-2 hidden-xs">
 				  <figure class="thumbnail">
@@ -109,21 +120,36 @@
 			$hasReplies = True;
 		}
 		while($reply = $resultReplies->fetch_assoc()) {
-			$sqlReplies2 = "SELECT userID, post_date, body FROM comments WHERE commentID='" . $reply['replyPost'] . "';";
+			$sqlReplies2 = "SELECT * FROM comments WHERE commentID='" . $reply['replyPost'] . "';";
 			$resultReplies2 = $mysqli->query($sqlReplies2)->fetch_assoc();
+			$sql3 = "SELECT username, id FROM usertable WHERE id=". $resultReplies2['userID']. ";";
+			$result3 = $mysqli->query($sql3) or die($mysqli->error);
+			$user = $result3->fetch_assoc();
 			echo ' 
 				<div class="panel panel-default arrow left">
 					<div class="panel-body">
 					  <header class="text-left">
-						<div class="comment-user"><i class="fa fa-user"></i> ' . $resultReplies2['userID'] . '</div>
+						<div class="comment-user">
+						<a href="profile.php?id='. $user['id'] . '">
+						<i class="fa fa-user"></i> ' . $user['username'] . '</div></a>
 						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
 			';
 			echo '<p> '. $resultReplies2['body'].'</p>';
-			if ($resultReplies2 === True) {
+			if ($resultReplies2 == True) {
 				postReplies($mysqli, $resultReplies2);
 			}
+			$commentID = $resultReplies2['commentID'];
 			echo '
 				</div>
+				<div id="'.$commentID.'" style="display:none">
+				<form action="" method="post">
+					<textarea placeholder="Write your comment here" name="comment"></textarea>
+					<div>
+						<button type="submit">Submit</button>
+					</div>
+				</form>
+				</div>
+				<button onclick="openText('.$commentID.')">Reply</button>
 			</div>
 			';
 		}
@@ -136,3 +162,13 @@
 	?> 
   </div>
 </body>
+<script>
+	function openText(commentID) {
+		var textBox = document.getElementById(commentID);
+		if(textBox.style.display === "none") {
+			textBox.style.display = "block";	
+		} else {
+			textBox.style.display = "none";
+		}
+	}
+</script>

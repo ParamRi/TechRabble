@@ -32,5 +32,8 @@
 	  <li class="nav-item">
 		<a class="nav-link" href="create_new_discussion.php">New Discussion</a>
 	  </li>
+	  <li class="nav-item">
+		<a class="nav-link" href="profile.php">Profile</a>
+	  </li>
     </ul>
   </nav>
