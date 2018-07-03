@@ -31,15 +31,38 @@
 			</form>
 			</div> ';
 		} else {
-			$comment = $_POST['comment'];
-			$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $comment . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
-			echo $sql4;
-			$result4 = $mysqli->query($sql4);
-			if($result4 === True) {
-				echo 'Comment added successfully';
-			} else {
-				echo 'Couldn\'t add comment.';
-				echo $mysqli->error;
+			if(isset($_POST['comment'])) {
+				var_dump($_POST);
+				$comment = $_POST['comment'];
+				$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $comment . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
+				echo $sql4;
+				$result4 = $mysqli->query($sql4);
+				if($result4 === True) {
+					echo 'Comment added successfully';
+				} else {
+					echo 'Couldn\'t add comment.';
+					echo $mysqli->error;
+				}
+			} else if (isset($_POST['reply'])) {
+				var_dump($_POST);
+				$reply = $_POST['reply'];
+				$sql5 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $reply . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
+				echo $sql5;
+				$result5 = $mysqli->query($sql5);
+				if($result5 === True) {
+					$last_reply = $mysqli->insert_id;
+					echo "New comment added";
+					$sql6 = "INSERT INTO replys (originalPost, replyPost) VALUES ('". $_POST['original'] ."', '" . $last_reply . "');";
+					echo $sql6;
+					$result6 = $mysqli->query($sql6);
+					if($result6 === True) {
+						echo "reply made";
+					} else {
+						echo "reply failed";
+					}
+				} else {
+					echo "Failed to add comment";
+				}
 			}
 		}
 	} else {
@@ -50,15 +73,15 @@
 	echo ' <div class="container">
 		  <div class="row">
 			<div class="col-md-8">
-			  <h2 class="page-header">Comments</h2>';
+			  <h2 class="page-header">Comments</h2>
+			  <section class="comment-list">
+			  <article class="row">';
 	while($comment = $result2->fetch_assoc()){
 		$sql3 = "SELECT username, id FROM usertable WHERE id=". $comment['userID']. ";";
 		$result3 = $mysqli->query($sql3) or die($mysqli->error);
 		$user = $result3->fetch_assoc();
-		echo '<section class="comment-list">
-			  <!-- First Comment -->
-			  <article class="row">
-				<div class="col-md-2 col-sm-2 hidden-xs">
+		$commentID = $comment['commentID'];
+		echo '<div class="col-md-2 col-sm-2 hidden-xs">
 				  <figure class="thumbnail">
 					<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
 					<figcaption class="text-center">username</figcaption>
@@ -76,12 +99,14 @@
 						<p> '. 
 						  $comment['body']
 						. ' </p>
+					<button onclick="openText('.$commentID.')">Reply</button>
 		';
-		$commentID = $comment['commentID'];
+		
 		echo '
 			<div id="'.$commentID.'" style="display:none">
 				<form action="" method="post">
-					<textarea placeholder="Write your comment here" name="comment"></textarea>
+					<textarea placeholder="Make a reply comment here" name="reply"></textarea>
+					<input name="original" value="'. $commentID . '" />
 					<div>
 						<button type="submit">Submit</button>
 					</div>
@@ -89,8 +114,7 @@
 			</div>
 		';
 		postReplies($mysqli, $comment);
-		echo '</div>
-					  <button onclick="openText('.$commentID.')">Reply</button>
+		echo '		  </div>
 					</div>
 				  </div>
 				</div>
@@ -107,7 +131,8 @@
 		$resultReplies = $mysqli->query($sqlReplies);
 		$hasReplies = False;
 		if($resultReplies->num_rows > 0) {
-			echo '<section class="comment-list">
+			echo '
+		<section class="comment-list">
 			  <article class="row">
 				<div class="col-md-2 col-sm-2 hidden-xs">
 				  <figure class="thumbnail">
@@ -131,27 +156,29 @@
 					  <header class="text-left">
 						<div class="comment-user">
 						<a href="profile.php?id='. $user['id'] . '">
-						<i class="fa fa-user"></i> ' . $user['username'] . '</div></a>
+						<i class="fa fa-user"></i> ' . $user['username'] . '</a>
+						</div>
 						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
 			';
 			echo '<p> '. $resultReplies2['body'].'</p>';
-			if ($resultReplies2 == True) {
-				postReplies($mysqli, $resultReplies2);
-			}
 			$commentID = $resultReplies2['commentID'];
 			echo '
-				</div>
-				<div id="'.$commentID.'" style="display:none">
-				<form action="" method="post">
-					<textarea placeholder="Write your comment here" name="comment"></textarea>
-					<div>
-						<button type="submit">Submit</button>
 					</div>
-				</form>
+					<div id="'.$commentID.'" style="display:none">
+					<form action="" method="post">
+						<textarea placeholder="Make a reply commet here" name="reply" original="' . $commentID .'"></textarea>
+						<div>
+							<button type="submit">Submit</button>
+						</div>
+					</form>
 				</div>
 				<button onclick="openText('.$commentID.')">Reply</button>
 			</div>
 			';
+			if ($resultReplies2 == True) {
+				postReplies($mysqli, $resultReplies2);
+			}
+			
 		}
 		if($hasReplies) {
 			echo '</div>
