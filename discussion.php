@@ -47,13 +47,11 @@
 				var_dump($_POST);
 				$reply = $_POST['reply'];
 				$sql5 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $reply . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
-				echo $sql5;
 				$result5 = $mysqli->query($sql5);
 				if($result5 === True) {
 					$last_reply = $mysqli->insert_id;
 					echo "New comment added";
 					$sql6 = "INSERT INTO replys (originalPost, replyPost) VALUES ('". $_POST['original'] ."', '" . $last_reply . "');";
-					echo $sql6;
 					$result6 = $mysqli->query($sql6);
 					if($result6 === True) {
 						echo "reply made";
@@ -70,78 +68,33 @@
 	}
 	$sql2 = "SELECT * FROM `comments` WHERE discID=" . $disc_id . " AND commentID NOT IN (SELECT replyPost FROM replys); ";
 	$result2 = $mysqli->query($sql2);
-	echo ' <div class="container">
-		  <div class="row">
+	echo ' 
+	<div class="container">
+		<div class="row">
 			<div class="col-md-8">
 			  <h2 class="page-header">Comments</h2>
 			  <section class="comment-list">
-			  <article class="row">';
+			  ';
 	while($comment = $result2->fetch_assoc()){
 		$sql3 = "SELECT username, id FROM usertable WHERE id=". $comment['userID']. ";";
 		$result3 = $mysqli->query($sql3) or die($mysqli->error);
 		$user = $result3->fetch_assoc();
-		$commentID = $comment['commentID'];
-		echo '<div class="col-md-2 col-sm-2 hidden-xs">
-				  <figure class="thumbnail">
-					<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
-					<figcaption class="text-center">username</figcaption>
-				  </figure>
-				</div>
-				<div class="col-md-10 col-sm-10">
-				  <div class="panel panel-default arrow left">
-					<div class="panel-body">
-					  <header class="text-left">
-						<a href="profile.php?id='. $user['id'] . '">
-						<i class="fa fa-user"></i> ' . $user['username'] . '</div></a>
-						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $comment['post_date'] .' </time>
-					  </header>
-					  <div class="comment-post">
-						<p> '. 
-						  $comment['body']
-						. ' </p>
-					<button onclick="openText('.$commentID.')">Reply</button>
-		';
+		postComment($user, $comment);
 		
-		echo '
-			<div id="'.$commentID.'" style="display:none">
-				<form action="" method="post">
-					<textarea placeholder="Make a reply comment here" name="reply"></textarea>
-					<input name="original" value="'. $commentID . '" />
-					<div>
-						<button type="submit">Submit</button>
-					</div>
-				</form>
-			</div>
-		';
 		postReplies($mysqli, $comment);
-		echo '		  </div>
-					</div>
-				  </div>
-				</div>
-			  </article>
-			  </section>
-		';
 	}
-	echo '</div>
+	echo '	  
+			  </section>
 			</div>
-		</div>';
+		</div>
+	</div>';
 		
 	function postReplies($mysqli, $comment) {
 		$sqlReplies = "SELECT replyPost FROM replys WHERE originalPost=". $comment['commentID'] . ";";
 		$resultReplies = $mysqli->query($sqlReplies);
 		$hasReplies = False;
 		if($resultReplies->num_rows > 0) {
-			echo '
-		<section class="comment-list">
-			  <article class="row">
-				<div class="col-md-2 col-sm-2 hidden-xs">
-				  <figure class="thumbnail">
-					<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
-					<figcaption class="text-center">username</figcaption>
-				  </figure>
-				</div>
-				<div class="col-md-10 col-sm-10">
-				  ';
+			echo '<div id="reply">';
 			$hasReplies = True;
 		}
 		while($reply = $resultReplies->fetch_assoc()) {
@@ -158,13 +111,13 @@
 						<a href="profile.php?id='. $user['id'] . '">
 						<i class="fa fa-user"></i> ' . $user['username'] . '</a>
 						</div>
-						<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
+					<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
 			';
 			echo '<p> '. $resultReplies2['body'].'</p>';
 			$commentID = $resultReplies2['commentID'];
 			echo '
 					</div>
-					<div id="'.$commentID.'" style="display:none">
+				<div id="'.$commentID.'" style="display:none">
 					<form action="" method="post">
 						<textarea placeholder="Make a reply commet here" name="reply" original="' . $commentID .'"></textarea>
 						<div>
@@ -173,7 +126,7 @@
 					</form>
 				</div>
 				<button onclick="openText('.$commentID.')">Reply</button>
-			</div>
+				</div>
 			';
 			if ($resultReplies2 == True) {
 				postReplies($mysqli, $resultReplies2);
@@ -181,10 +134,46 @@
 			
 		}
 		if($hasReplies) {
-			echo '</div>
-			</div>
-		</div>';
+			echo '</div>';
 		}
+	}
+	
+	function postComment($user, $comment) {
+		$commentID = $comment['commentID'];
+		echo '
+		<div class="col-md-10 col-sm-10">
+			<div class="panel panel-default arrow left">
+				<div class="panel-body">
+				  <header class="text-left">
+					<a href="profile.php?id='. $user['id'] . '">
+					<i class="fa fa-user"></i> ' . $user['username'] . '
+				</div></a>
+					<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $comment['post_date'] .' </time>
+				  
+					<div class="comment-post">
+					<p> '. 
+					  $comment['body']
+					. ' </p>
+					<button onclick="openText('.$commentID.')">Reply</button>
+					</div>
+				</div>
+				  
+		';
+		
+		echo '
+				<div id="'.$commentID.'" style="display:none">
+					<form action="" method="post">
+						<textarea placeholder="Make a reply comment here" name="reply"></textarea>
+						<input name="original" value="'. $commentID . '" />
+						<div>
+							<button type="submit">Submit</button>
+						</div>
+					</form>
+				</div>
+		';
+		echo '
+		</div>
+		';
 	}
 	?> 
   </div>
