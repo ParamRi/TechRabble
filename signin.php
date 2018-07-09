@@ -60,19 +60,23 @@
 						';
 						
 					} else {
-						echo '<div class="jumbotron text-center">
-							<h1>Woops!</h1>
-							<p id="subheader">wrong username or password</p>
-						</div>
-						';
-						include 'signin_form.html';
+						signinError();
 					}
 				} else {
-					echo "wrong username or password";
-					echo "Error: " . $sql . "<br>" . $mysqli->error;
+					signinError();
 				}
 			}
 		}
+	}
+	
+	function signinError() {
+		echo '
+		<div class="jumbotron text-center">
+			<h1>Woops!</h1>
+			<p id="subheader">wrong username or password</p>
+		</div>
+		';
+		include 'signin_form.html';
 	}
 ?>
   
