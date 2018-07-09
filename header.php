@@ -18,7 +18,7 @@
   <style>
 	#comment {
 		margin 0 auto;
-		background-color: AntiqueWhite;
+		background-color: Lavender;
 	}
 	
 	#reply {

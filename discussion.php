@@ -34,32 +34,40 @@
 			if(isset($_POST['comment'])) {
 				var_dump($_POST);
 				$comment = $_POST['comment'];
-				$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $comment . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
-				echo $sql4;
-				$result4 = $mysqli->query($sql4);
-				if($result4 === True) {
-					echo 'Comment added successfully';
+				if(!empty($comment)) {
+					$sql4 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $comment . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
+					echo $sql4;
+					$result4 = $mysqli->query($sql4);
+					if($result4 === True) {
+						echo 'Comment added successfully';
+					} else {
+						echo 'Couldn\'t add comment.';
+						echo $mysqli->error;
+					}
 				} else {
-					echo 'Couldn\'t add comment.';
-					echo $mysqli->error;
+					echo 'Comment empty';
 				}
 			} else if (isset($_POST['reply'])) {
 				var_dump($_POST);
 				$reply = $_POST['reply'];
-				$sql5 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $reply . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
-				$result5 = $mysqli->query($sql5);
-				if($result5 === True) {
-					$last_reply = $mysqli->insert_id;
-					echo "New comment added";
-					$sql6 = "INSERT INTO replys (originalPost, replyPost) VALUES ('". $_POST['original'] ."', '" . $last_reply . "');";
-					$result6 = $mysqli->query($sql6);
-					if($result6 === True) {
-						echo "reply made";
+				if(!empty($reply)) {
+					$sql5 = "INSERT INTO comments (body, userID, discID) VALUES (\"" . $reply . "\", '" . $_SESSION['id'] . "', " . $disc_id . ");";
+					$result5 = $mysqli->query($sql5);
+					if($result5 === True) {
+						$last_reply = $mysqli->insert_id;
+						echo "New comment added";
+						$sql6 = "INSERT INTO replys (originalPost, replyPost) VALUES ('". $_POST['original'] ."', '" . $last_reply . "');";
+						$result6 = $mysqli->query($sql6);
+						if($result6 === True) {
+							echo "reply made";
+						} else {
+							echo "reply failed";
+						}
 					} else {
-						echo "reply failed";
+						echo "Failed to add comment";
 					}
 				} else {
-					echo "Failed to add comment";
+					echo 'Reply empty';
 				}
 			}
 		}
@@ -79,9 +87,11 @@
 		$sql3 = "SELECT username, id FROM usertable WHERE id=". $comment['userID']. ";";
 		$result3 = $mysqli->query($sql3) or die($mysqli->error);
 		$user = $result3->fetch_assoc();
+		echo '<div id="comment">';
 		postComment($user, $comment);
 		
 		postReplies($mysqli, $comment);
+		echo '</div>';
 	}
 	echo '	  
 			  </section>

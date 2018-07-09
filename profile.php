@@ -54,7 +54,9 @@
 						} 
 						
 						if($_SERVER['REQUEST_METHOD'] == 'POST') {
-							$_BIO = $_POST['bio'];
+							if(isset($_POST['bio'])) {
+								$_BIO = $_POST['bio'];
+							}
 						}
 					?>
                     </div>
@@ -73,12 +75,77 @@
 				echo 'No bio available';
 			}
 			if(!isset($_GET['id']) || ($_GET['id'] == $_SESSION['id'])){
-				echo '<button onClick="location.href=\'editProfile.php?id='. $_SESSION['id'] .'\'" type="button" class="btn btn-default btn-sm">
+				echo '<div id="editBioButton">
+					<button onClick="editBio()" type="button" class="btn btn-default btn-sm">
 				  <span class="glyphicon glyphicon-pencil"></span> Edit
-				</button>';
+				</button> 
+				</div>';
+				echo '<div class="form-group" id="editBioTextBox" style="display:none">
+				  <label for="bio">Enter Bio:</label>
+				  <textarea class="form-control" rows="5" id="bio"></textarea>
+				</div> ';
 			}
 			?>
 			
 		</div>
 	</div>
+	<div class="row">
+		<div class="well well-lg">
+			<h4> Recent Comments</h4>
+			</br>
+			<?php
+				$userID = '';
+				if(isset($_GET['id'])) {
+					$userID = $_GET['id'];
+				} else {
+					$userID = $_SESSION['id'];
+				}
+				echo '<table>
+				<tr>
+					<th>Discussion</th>
+					<th>Comment</th>
+					<th>Post Date</th>
+				</tr>';
+				//$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+				$sql = "SELECT * FROM `comments` WHERE userID=" . $userID . ";";
+				$result = $mysqli->query($sql);
+				while($comment = $result->fetch_assoc()) {
+					$discTitle = getDiscTitle($comment['discID'], $mysqli);
+					echo '<tr>
+					<td>'. $discTitle .'</td>
+					<td> ' . $comment['body'] . '</td>
+					<td> ' . $comment['post_date'] . '</td>
+					</tr>';
+				}
+				echo '</table>';
+				
+				function getDiscTitle($discID, $mysqli) {
+					$sql = "SELECT title FROM discussions WHERE discId=". $discID .";";
+					$result = $mysqli->query($sql);
+					if($title = $result->fetch_assoc()['title']) {
+						return $title;
+					} else {
+						return $discID;
+					}
+				}
+			?>
+		</div>
+	</div>
 </div>
+<script>
+	function editBio() {
+		
+		var textBox = document.getElementById('editBioTextBox');
+		if(textBox.style.display === "none") {
+			textBox.style.display = "block";
+			hideButton();
+		} else {
+			textBox.style.display = "none";
+		}
+	}
+	
+	function hideButton() {
+		var button = document.getElementByID('editBioButton');
+		button.style.display = "none";
+	}
+</script>
