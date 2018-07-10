@@ -6,9 +6,10 @@
 ?>
   
 <?php
-	echo isset($_SESSION['signed_in']);
 	if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
-		echo 'You are already signed in, you can <a href="signout.php">sign out</a> if you want.';
+		echo '<div class="jumbotron text-center">
+		<p>You are already signed in, you can <a href="signout.php">sign out</a> if you want.</p>
+		</div>';
 	} else {
 		if($_SERVER['REQUEST_METHOD'] != 'POST') {
 			echo '

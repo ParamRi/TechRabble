@@ -123,8 +123,19 @@
 						</div>
 					<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $resultReplies2['post_date'] .' </time>
 			';
-			echo '<p> '. $resultReplies2['body'].'</p>';
 			$commentID = $resultReplies2['commentID'];
+			echo '		<p> '. $resultReplies2['body'].'</p>';
+			if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
+				echo '
+						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')">
+							<span class="glyphicon glyphicon-circle-arrow-up"></span>
+						</button>
+						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')">
+							<span class="glyphicon glyphicon-circle-arrow-down"></span>
+						</button>
+						<button onclick="openText('.$commentID.')">Reply</button>
+				';
+			}
 			echo '
 					</div>
 				<div id="'.$commentID.'" style="display:none">
@@ -135,7 +146,6 @@
 						</div>
 					</form>
 				</div>
-				<button onclick="openText('.$commentID.')">Reply</button>
 				</div>
 			';
 			if ($resultReplies2 == True) {
@@ -161,13 +171,24 @@
 					<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> '. $comment['post_date'] .' </time>
 				  
 					<div class="comment-post">
-					<p> '. 
-					  $comment['body']
-					. ' </p>
-					<button onclick="openText('.$commentID.')">Reply</button>
+						<p> '. 
+						  $comment['body']
+						. ' </p>
+						';
+		if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
+			echo '
+						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')">
+							<span class="glyphicon glyphicon-circle-arrow-up"></span>
+						</button>
+						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')">
+							<span class="glyphicon glyphicon-circle-arrow-down"></span>
+						</button>
+						<button onclick="openText('.$commentID.')">Reply</button>
+						<div id="votes'.$commentID.'"> <p> votes here </p> </div>
+			';
+		}
+		echo '
 					</div>
-				</div>
-				  
 		';
 		
 		echo '
@@ -196,5 +217,20 @@
 		} else {
 			textBox.style.display = "none";
 		}
+	}
+	
+	function voteUp(commentID, userID) {
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+			if (this.readyState==4 && this.status==200) {
+			  document.getElementById("votes"+commentID).innerHTML=this.responseText;
+			}
+		}
+		xmlhttp.open("GET","voting.php?commentID="+commentID+"&userID="+userID,true);
+		xmlhttp.send();
+	}
+	
+	function voteDown(commentID, userID) {
+		
 	}
 </script>
