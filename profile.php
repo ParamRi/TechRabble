@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	include 'header.php';
 	
 	if(!isset($_SESSION['signed_in']) || $_SESSION['signed_in'] != true) {

@@ -4,7 +4,6 @@
     Description: Description page for TechRabble
      -->
 <?php 
-	session_start();
 	include 'header.php';
 
 	echo "<div class=\"container\">";
@@ -127,16 +126,23 @@
 			echo '		<p> '. $resultReplies2['body'].'</p>';
 			if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
 				echo '
-						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')">
+						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-up"></span>
 						</button>
-						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')">
+						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-down"></span>
 						</button>
 						<button onclick="openText('.$commentID.')">Reply</button>
 				';
 			}
-			echo '
+			$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+			$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
+			$result = $mysqli->query($sql);
+			$numVotes = 0;
+			if($result) {
+				$numVotes = $result->fetch_assoc()['SUM(voteValue)'];
+			}
+			echo '<div id="votes'.$commentID.'"> <p>'.$numVotes.' </p> </div>
 					</div>
 				<div id="'.$commentID.'" style="display:none">
 					<form action="" method="post">
@@ -176,18 +182,25 @@
 						. ' </p>
 						';
 		if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
+			
 			echo '
-						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')">
+						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-up"></span>
 						</button>
-						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')">
+						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-down"></span>
 						</button>
 						<button onclick="openText('.$commentID.')">Reply</button>
-						<div id="votes'.$commentID.'"> <p> votes here </p> </div>
 			';
 		}
-		echo '
+		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+		$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
+		$result = $mysqli->query($sql);
+		$numVotes = 0;
+		if($result) {
+			$numVotes = $result->fetch_assoc()['SUM(voteValue)'];
+		}
+		echo '<div id="votes'.$commentID.'"> <p>'.$numVotes.' </p> </div>
 					</div>
 		';
 		
@@ -226,11 +239,67 @@
 			  document.getElementById("votes"+commentID).innerHTML=this.responseText;
 			}
 		}
-		xmlhttp.open("GET","voting.php?commentID="+commentID+"&userID="+userID,true);
+		xmlhttp.open("GET","voting.php?commentID="+commentID+"&userID="+userID+"&vote=up",true);
 		xmlhttp.send();
+		setColor("voteUp", commentID);
 	}
 	
 	function voteDown(commentID, userID) {
-		
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+			if (this.readyState==4 && this.status==200) {
+			  document.getElementById("votes"+commentID).innerHTML=this.responseText;
+			}
+		}
+		xmlhttp.open("GET","voting.php?commentID="+commentID+"&userID="+userID+"&vote=down",true);
+		xmlhttp.send();
+		setColor("voteDown", commentID);
 	}
+	
+	function getVoteCount(commentID) {
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+			if (this.readyState==4 && this.status==200) {
+			  document.getElementById("votes"+commentID).innerHTML=this.responseText;
+			}
+		}
+		xmlhttp.open("GET","voting.php?commentID="+commentID+"&userID="+userID+"&getVotes=\"True\"",true);
+		xmlhttp.send();
+	}
+	
+	var colorUp = "#FFFFFF";
+	var colorDown = "#FFFFFF";
+    function setColor(btn, commentID) {
+		if(btn == "voteUp") {
+			var upBtn = document.getElementById(btn+commentID);
+			if (colorUp == "#7bd671") {
+				colorUp = "#FFFFFF";
+				upBtn.style.backgroundColor = colorUp;
+			}
+			else {
+				colorUp = "#7bd671";
+				upBtn.style.backgroundColor = colorUp;
+				if(colorDown == "#ef675f") {
+					var dwnBtn = document.getElementById("voteDown"+commentID);
+					colorDown = "#FFFFFF";
+					dwnBtn.style.backgroundColor = colorDown;
+				}
+			}
+		} else if (btn == "voteDown") {
+			var dwnBtn = document.getElementById(btn+commentID);
+			if (colorDown == "#ef675f") {
+				colorDown = "#FFFFFF";
+				dwnBtn.style.backgroundColor = colorDown;
+			}
+			else {
+				colorDown = "#ef675f";
+				dwnBtn.style.backgroundColor = colorDown;
+				if(colorUp == "#7bd671") {
+					var upBtn = document.getElementById("voteUp"+commentID);
+					colorUp = "#FFFFFF";
+					upBtn.style.backgroundColor = colorUp;
+				}
+			}
+		}
+    }
 </script>

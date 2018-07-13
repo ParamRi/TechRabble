@@ -44,8 +44,20 @@
 	  <li class="nav-item">
 		<a class="nav-link" href="create_new_discussion.php">New Discussion</a>
 	  </li>
-	  <li class="nav-item">
-		<a class="nav-link" href="profile.php">Profile</a>
-	  </li>
+	  
+	  <?php
+		session_start();
+		if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
+			echo '
+		<li class="nav-item">
+			
+			<a class="nav-link" href="profile.php">
+			<span class="glyphicon glyphicon-user"></span>
+			'.$_SESSION['username'].'
+			</a>
+		</li>
+			';
+		} 
+	  ?>
     </ul>
   </nav>

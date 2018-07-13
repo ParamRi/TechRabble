@@ -4,7 +4,6 @@
     Description: Page that allows users to create new discussions
      -->
 <?php
-	session_start();
 	include 'header.php';
 	
 	if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
@@ -16,10 +15,10 @@
 			';
 			include 'new_discussion_form.html';
 		} else {
-			$erros = array();
+			$errors = array();
 			
 			if(!isset($_POST['title'])) {
-				$erros[] = 'You need a Title';
+				$errors[] = 'You need a Title';
 				include 'new_discussion_form.html';
 			}
 			if(!isset($_POST['body']))
