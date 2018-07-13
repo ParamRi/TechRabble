@@ -125,15 +125,41 @@
 			$commentID = $resultReplies2['commentID'];
 			echo '		<p> '. $resultReplies2['body'].'</p>';
 			if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
-				echo '
-						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
-							<span class="glyphicon glyphicon-circle-arrow-up"></span>
-						</button>
-						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
-							<span class="glyphicon glyphicon-circle-arrow-down"></span>
-						</button>
-						<button onclick="openText('.$commentID.')">Reply</button>
-				';
+				$sql = "SELECT * FROM votes WHERE onComment=" . $commentID ." AND byUser=" . $_SESSION['id'].";";
+				$result = $mysqli->query($sql);
+				if($result) {
+					if($result->num_rows > 0){
+						$row = $result->fetch_assoc();
+						if($row['voteValue'] == '1') {
+							echo '
+							<button style="background-color:#7bd671" onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-up"></span>
+							</button>
+							<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-down"></span>
+							</button>';
+						} else if($row['voteValue'] == '-1'){
+							echo '
+							<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-up"></span>
+							</button>
+							<button style="background-color:#ef675f" onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-down"></span>
+							</button>';
+						}
+					} else {
+						echo '
+								<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+									<span class="glyphicon glyphicon-circle-arrow-up"></span>
+								</button>
+								<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
+									<span class="glyphicon glyphicon-circle-arrow-down"></span>
+								</button>
+						';
+					}
+				}
+				echo '<button onclick="openText('.$commentID.')">Reply</button>';
+				
 			}
 			$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
 			$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
@@ -165,6 +191,7 @@
 	}
 	
 	function postComment($user, $comment) {
+		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
 		$commentID = $comment['commentID'];
 		echo '
 		<div class="col-md-10 col-sm-10">
@@ -182,18 +209,42 @@
 						. ' </p>
 						';
 		if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true) {
-			
-			echo '
-						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+			$sql = "SELECT * FROM votes WHERE onComment=" . $commentID ." AND byUser=" . $_SESSION['id'].";";
+			$result = $mysqli->query($sql);
+			if($result) {
+				if($result->num_rows > 0){
+					$row = $result->fetch_assoc();
+					if($row['voteValue'] == '1') {
+						echo '
+						<button style="background-color:#7bd671" onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-up"></span>
 						</button>
 						<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
 							<span class="glyphicon glyphicon-circle-arrow-down"></span>
+						</button>';
+					} else if($row['voteValue'] == '-1'){
+						echo '
+						<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+							<span class="glyphicon glyphicon-circle-arrow-up"></span>
 						</button>
-						<button onclick="openText('.$commentID.')">Reply</button>
-			';
+						<button style="background-color:#ef675f" onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
+							<span class="glyphicon glyphicon-circle-arrow-down"></span>
+						</button>';
+					}
+				} else {
+					echo '
+							<button onclick="voteUp('.$commentID.', '.$_SESSION['id'].')" id="voteUp'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-up"></span>
+							</button>
+							<button onclick="voteDown('.$commentID.', '.$_SESSION['id'].')" id="voteDown'.$commentID.'">
+								<span class="glyphicon glyphicon-circle-arrow-down"></span>
+							</button>
+					';
+				}
+			}
+			echo '<button onclick="openText('.$commentID.')">Reply</button>';
+			
 		}
-		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
 		$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
 		$result = $mysqli->query($sql);
 		$numVotes = 0;
@@ -272,30 +323,34 @@
     function setColor(btn, commentID) {
 		if(btn == "voteUp") {
 			var upBtn = document.getElementById(btn+commentID);
-			if (colorUp == "#7bd671") {
+			var currentColor = upBtn.style.backgroundColor;
+			if (currentColor == "rgb(123, 214, 113)") {
 				colorUp = "#FFFFFF";
 				upBtn.style.backgroundColor = colorUp;
 			}
 			else {
 				colorUp = "#7bd671";
 				upBtn.style.backgroundColor = colorUp;
-				if(colorDown == "#ef675f") {
-					var dwnBtn = document.getElementById("voteDown"+commentID);
+				var dwnBtn = document.getElementById("voteDown"+commentID);
+				var otherColor = dwnBtn.style.backgroundColor;
+				if(otherColor != "#FFFFFF") {
 					colorDown = "#FFFFFF";
 					dwnBtn.style.backgroundColor = colorDown;
 				}
 			}
 		} else if (btn == "voteDown") {
 			var dwnBtn = document.getElementById(btn+commentID);
-			if (colorDown == "#ef675f") {
+			var currentColor = dwnBtn.style.backgroundColor;
+			if (currentColor == "rgb(239, 103, 95)") {
 				colorDown = "#FFFFFF";
 				dwnBtn.style.backgroundColor = colorDown;
 			}
 			else {
 				colorDown = "#ef675f";
 				dwnBtn.style.backgroundColor = colorDown;
-				if(colorUp == "#7bd671") {
-					var upBtn = document.getElementById("voteUp"+commentID);
+				var upBtn = document.getElementById("voteUp"+commentID);
+				var otherColor = upBtn.style.backgroundColor;
+				if(otherColor != "#FFFFFF") {
 					colorUp = "#FFFFFF";
 					upBtn.style.backgroundColor = colorUp;
 				}
