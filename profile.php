@@ -69,19 +69,22 @@
 			</br>
 			<?php
 			if(isset($_BIO)) {
-				echo '<p>' . $_BIO . '</p>';
+				echo '<div id="bioText">
+					<p>' . $_BIO . '</p>
+				</div>';
 			} else {
 				echo 'No bio available';
 			}
 			if(!isset($_GET['id']) || ($_GET['id'] == $_SESSION['id'])){
 				echo '<div id="editBioButton">
-					<button onClick="editBio()" type="button" class="btn btn-default btn-sm">
+					<button onClick="openBioBox()" type="button" class="btn btn-default btn-sm">
 				  <span class="glyphicon glyphicon-pencil"></span> Edit
 				</button> 
 				</div>';
 				echo '<div class="form-group" id="editBioTextBox" style="display:none">
 				  <label for="bio">Enter Bio:</label>
 				  <textarea class="form-control" rows="5" id="bio"></textarea>
+				  <button onClick="editBio('.$_SESSION['id'].')"> Edit </button>
 				</div> ';
 			}
 			?>
@@ -112,7 +115,7 @@
 					$discTitle = getDiscTitle($comment['discID'], $mysqli);
 					echo '<tr>
 					<td>'. $discTitle .'</td>
-					<td> ' . $comment['body'] . '</td>
+					<td> <a href="discussion.php?id=\''.$comment['discID'].'\'" >' . $comment['body'] . '</td>
 					<td> ' . $comment['post_date'] . '</td>
 					</tr>';
 				}
@@ -132,8 +135,7 @@
 	</div>
 </div>
 <script>
-	function editBio() {
-		
+	function openBioBox() {
 		var textBox = document.getElementById('editBioTextBox');
 		if(textBox.style.display === "none") {
 			textBox.style.display = "block";
@@ -141,6 +143,20 @@
 		} else {
 			textBox.style.display = "none";
 		}
+	}
+	
+	function editBio(userID) {
+		var bio = document.getElementById("bio").value;
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open("POST","editProfile.php");
+		xmlhttp.onreadystatechange=function() {
+			if (this.readyState==4 && this.status==200) {
+			  document.getElementById("bioText").innerHTML=this.responseText;
+			}
+		}
+		xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlhttp.send(JSON.stringify({bio:bio, userID:userID}));
 	}
 	
 	function hideButton() {

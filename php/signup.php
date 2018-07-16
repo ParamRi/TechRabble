@@ -18,6 +18,13 @@
 		} else {
 			$username = $_POST['username'];
 			$email = $_POST['email'];
+			if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
+				echo '
+				<div class="jumbotron text-center">
+					<p id="subheader">Invalid email!</p>
+				</div>';
+				die();
+			}
 			$password = $_POST['password'];
 			$confirm_password = $_POST['confirm_password'];
 			if ($password == $confirm_password){
