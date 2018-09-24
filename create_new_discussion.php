@@ -40,7 +40,7 @@
 				}
 				$body = $_POST['body'];
 				var_dump($_POST);
-				$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+				$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 				$sql = "INSERT INTO discussions (title, subj, body, userID) VALUES ('$title', '$subject', 'body', '" . $_SESSION['id'] . "');";
 				$result = $mysqli->query($sql);
 				if ($result === TRUE) {
