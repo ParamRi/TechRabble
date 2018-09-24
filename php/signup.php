@@ -18,7 +18,7 @@
 		} else {
 			$username = $_POST['username'];
 			$email = $_POST['email'];
-			if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
+			if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
 				echo '
 				<div class="jumbotron text-center">
 					<p id="subheader">Invalid email!</p>
@@ -32,7 +32,7 @@
 					Your email is: $email <br>
 					</p>
 					passwords match <br>';
-				$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+				$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 				$passwordHash = password_hash($password, PASSWORD_BCRYPT);
 				$sql = "INSERT INTO usertable (username, email, passwordHash) VALUES ('$username', '$email', '" . $passwordHash . "')";
 				$result = $mysqli->query($sql);
