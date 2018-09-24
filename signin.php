@@ -37,7 +37,7 @@
 			} else {
 				$username = $_POST['username'];
 				$password = $_POST['password'];
-				$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+				$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 				$passwordHash = password_hash($password, PASSWORD_BCRYPT);
 				$sql = "SELECT id, username, passwordHash FROM usertable WHERE username='" . $username . "';";
 				$result = $mysqli->query($sql);

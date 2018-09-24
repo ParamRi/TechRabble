@@ -4,7 +4,7 @@
 	$userID = $_GET['userID'];
 	if(isset($_GET['vote'])){
 		$vote = $_GET['vote'];
-		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+		$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 		$sql = "SELECT * FROM votes WHERE onComment=" . $commentID ." AND byUser=" . $userID.";";
 		$result = $mysqli->query($sql);
 		if($result) {
@@ -64,7 +64,7 @@
 	} 
 	
 	function getVoteCount($commentID) {
-		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+		$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 		$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
 		$result = $mysqli->query($sql);
 		$numVotes = 0;

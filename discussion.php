@@ -10,7 +10,7 @@
 	echo "<div class=\"jumbotron text-center\">";
 
 	$disc_id = $_GET['id']; 
-	$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+	$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 	$sql = "SELECT title, subj, body FROM discussions WHERE discId = " . $disc_id;
 	$result = $mysqli->query($sql);
 	$row = $result->fetch_assoc();
@@ -161,7 +161,7 @@
 				echo '<button onclick="openText('.$commentID.')">Reply</button>';
 				
 			}
-			$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+			$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 			$sql = "SELECT SUM(voteValue) FROM votes WHERE onComment=" . $commentID .";";
 			$result = $mysqli->query($sql);
 			$numVotes = 0;
@@ -191,7 +191,7 @@
 	}
 	
 	function postComment($user, $comment) {
-		$mysqli = new mysqli("localhost", "root", "HelloWorld2431@$", "techrabble");
+		$mysqli = new mysqli("localhost", "root", "HelloWorld2431$$", "techrabble");
 		$commentID = $comment['commentID'];
 		echo '
 		<div class="col-md-10 col-sm-10">
